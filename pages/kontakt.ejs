@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Wczytajka - Kontakt</title>
+	<% include partials/head.ejs %>
+
+</head>
+<body>
+
+	<div id="header"></div>
+
+	<div class="wrapper">
+			
+		<div class="top_wrapper">
+			<% include partials/header.ejs %>
+			<% include partials/menu.ejs %>
+		</div>
+		
+		<div class="main_wrapper">
+			<div class="main_container">
+			
+			<div class="kontakt">
+				Jeżeli jesteś zainteresowany bliższą współpracą przy projektach lub optymalizacji w zakresie inwestycji, doradztwa lub wykonawstwa, to wszelkie informacje proszę kierować na:
+				<br />
+				<br />
+				<div class="left_padding">
+					<div class="email">
+						- <a href="maito:admin@progames.pro" title="Write E-mail">maila</a> ( <input class="email_address" value="admin@progames.pro" title="E-mail address" alt="E-mail address" /> )
+						<button class="copy_button email_button" data-clipboard-target=".email_address"><p title="Copy e-mail address"></p></button>
+					</div>
+				</div>
+				
+				<br />
+				badź pod numer telefonu:
+				<br />
+				<br />
+				<div class="left_padding"><b><i>+48</i> 570300771</b>.</div>
+				<br />
+				<br />
+				Jeżeli strona pomogła Tobie w skatalogowaniu informacji z zakresu seo, sem, użyteczności - w zbudowaniu zaplecza, rozważ dobrowolny datek za pomocą którejś z opcji - informacje w stopce poniżej.
+			</div>
+			
+			<div class="seo-image">
+				<img src="../img/error404.png" alt="SeoTester" title="SeoTester">
+			</div>
+			
+			<div class="kontakt">
+				Nie jestesmy perfekcyjni, trudno przetestować wszystkie możliwe kombinacje, które niekiedy wywołują ew. błędy. Jestesmy jednak pracowici i systematyczni, więc jeżeli znalazłeś jakieś bugi, lub uważasz, że coś działa nieprawidłowo - <b><a href="mailto:test@test.pl">poinformuj nas o tym</a></b>.
+			</div>
+			
+			</div><!-- / main_container -->
+		</div><!-- main_wrapper -->
+
+	</div><!-- wrapper-->
+
+	<% include partials/footer.ejs %>
+	
+	<script>
+		<% include ../public/js/clipboard.min_v1.7.1.js %> // on live server we need to use - <# include ../js/clipboard.min.js %>
+		var copy_buttons = document.querySelectorAll('button'); // to musi byc ZA zalinkowanym clipboard.js (lub clipboard.min.js)
+		//var ltc_button = document.getElementsByClassName('ltc_button')[0];
+		var clipboard = new Clipboard(copy_buttons); // here we add every COPY button we use to copy something (like wallet address etc.) // to musi byc ZA zalinkowanym clipboard.js (lub clipboard.min.js)
+	</script>
+
+</body>
+</html>

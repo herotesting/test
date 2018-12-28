@@ -1,0 +1,34 @@
+<nav>
+	<div class="main-menu-links">
+		<ul>
+			<li><a href="/">HOME</a></li><!-- <a href="http://localhost:6500"> = <a href="seo"> bo takie jest ustawione przekierowanie, a pamietajmy, ze 'http://localhost:6500' = '/' -->
+			<li>|</li>
+			<!--
+				<li>|</li>
+				<li><a href="/">BD protector</a></li>
+				<li><a href="/">I like</a></li>
+				<li><a href="/">Autoryzacja</a></li>
+			-->
+			<li><a href="/kontakt">Kontakt</a></li>
+			<li>|</li>
+			<li><a href="/sitemap">SiteMap</a></li>
+			<li>|</li>
+			<li>Select Theme:<br />
+			<select id="select_id" class="select_class" onchange="setActiveStyleSheet(this.value)" onfocus="this.selectedIndex = -1"><!-- https://stackoverflow.com/a/12404521/10019041 -->
+					<!-- <option value="Select Theme">Select Theme</option> (ten wybor jest opcjonalny) - ustawia on jako pierwszy theme tekst wyboru thema - dzieki temu zmiana thema, ktory jest wybrany i rownoczesnie ustawiony w menu jest mozliwa -->
+					<option value="Light Theme">Light Theme</option>
+					<option value="Dark Theme">Dark Theme</option>
+			</select></li>
+			<!--
+				<li><select id="select_id" class="select_class" onchange="setTheme()">
+					<option value="Select Theme">Select Theme</option>
+					<option value="green">Green</option>
+					<option value="blue">Blue</option>
+				</select></li>
+				<li>|</li>
+				<li><a href="test">TEST</a></li>
+				<li><a href="test2">TEST2</a></li>
+			-->
+		</ul>
+	</div>
+</nav>

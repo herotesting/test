@@ -1,0 +1,171 @@
+html, body
+{background:grey;}
+
+			.main-menu-links select.select_class
+			{/* background:silver; */
+			background:whitesmoke; /* whitesomke - #f5f5f5 */}
+			
+			.main-menu-links select.select_class option
+			{/* background:red; */
+			border:gray 4px solid;
+			background:gainsboro;}
+
+			.main-menu-links select.select_class option:checked
+			{background:silver;}
+			
+			.form_seo_input_class
+			{background:whitesmoke;}
+			
+			/* BOX DATA IMG FRAME */
+				
+				.box-data-img-frame_info, .box-data-img-frame_check, .box-data-img-frame_cancel, .box-data-img-frame_good, .box-data-img-frame_warning, .box-data-img-frame_bad, .box-data-img-frame_critical
+				{/*
+				float:left;
+				vertical-align:middle;
+				background:silver;
+				*/
+				display:flex;
+				flex:1;
+				align-items:center; /* or align-items:flex-start; */
+				justify-content:center;
+				padding:5px; /* padding:1% 1%; */
+				border-radius:8px 0 0 8px;}
+				
+				.box-data-img-frame_info
+				{background:url("../img/error404.png") no-repeat center;}
+
+				.box-data-img-frame_info img
+				{display:none;}
+				
+				.box-data-img-frame_check /* to samo co .box-data-img-frame_good */
+				{background:url("../img/error404.png") no-repeat center;}
+				
+				.box-data-img-frame_check img
+				{display:none;}
+				
+				.box-data-img-frame_cancel /* to samo co .box-data-img-frame_bad */
+				{background:url("../img/error404.png") no-repeat center;}
+				
+				.box-data-img-frame_cancel img
+				{display:none;}
+				
+				.box-data-img-frame_good
+				{background:url("../img/error404.png") no-repeat center;}
+
+				.box-data-img-frame_good img
+				{display:none;}
+				
+				.box-data-img-frame_warning
+				{background:url("../img/error404.png") no-repeat center;}
+				
+				.box-data-img-frame_warning img
+				{display:none;}
+
+				.box-data-img-frame_bad
+				{background:url("../img/error404.png") no-repeat center;}
+				
+				.box-data-img-frame_bad img
+				{display:none;}
+
+				.box-data-img-frame_critical
+				{background:url("../img/error404.png") no-repeat center;}
+				
+				.box-data-img-frame_critical img
+				{display:none;}
+			
+			/* / BOX DATA IMG FRAME */
+			
+			/* BOX DATA IMG (klasy samych obrazow) */
+				
+				.box-data-img_info, .box-data-img_check, .box-data-img_cancel, .box-data-img_good, .box-data-img_warning, .box-data-img_bad, .box-data-img_critical
+				{}
+				
+				.box-data-img_info
+				{}
+
+				.box-data-img_check /* to samo co .box-data-img_good */
+				{}
+				
+				.box-data-img_cancel /* to samo co .box-data-img_bad */
+				{}
+				
+				.box-data-img_good
+				{}
+
+				.box-data-img_warning
+				{}
+
+				.box-data-img_bad
+				{}
+
+				.box-data-img_critical
+				{}
+
+			/* BOX DATA IMG - end */
+			
+			
+			/* BOX DATA IMG FRAME - INSIDE */
+				
+				.box-data-inside-img-frame_info, .box-data-inside-img-frame_check, .box-data-inside-img-frame_cancel, .box-data-inside-img-frame_good, .box-data-inside-img-frame_warning, .box-data-inside-img-frame_bad, .box-data-inside-img-frame_critical
+				{/*
+				float:left;
+				vertical-align:middle;
+				*/
+				display:flex;
+				flex:1; /* opcjonalnie */
+				align-items:flex-start;
+				justify-content:center;
+				padding:5px; /* padding:1% 1%; */
+				border:1px dotted #e6e6e6;
+				}
+				
+				.box-data-inside-img-frame_info
+				{background:silver;}
+
+				.box-data-inside-img-frame_check /* to samo co .box-data-inside-img-frame_good */
+				{background:limegreen;}
+				
+				.box-data-inside-img-frame_cancel /* to samo co .box-data-inside-img-frame_bad */
+				{background:pink;}
+
+				.box-data-inside-img-frame_good
+				{background:limegreen;}
+
+				.box-data-inside-img-frame_warning
+				{background:yellow;}
+
+				.box-data-inside-img-frame_bad
+				{background:pink;}
+
+				.box-data-inside-img-frame_critical
+				{background:red;}
+
+			/* / BOX DATA IMG FRAME - INSIDE - end */
+			
+			/* BOX DATA IMG - INSIDE (klasy samych obrazow) */
+				
+				.box-data-inside-img_info, .box-data-inside-img_check, .box-data-inside-img_cancel, .box-data-inside-img_good, .box-data-inside-img_warning, .box-data-inside-img_bad, .box-data-inside-img_critical
+				{}
+				
+				.box-data-inside-img_info
+				{}
+
+				.box-data-inside-img_check /* to samo co .box-data-inside-img_good */
+				{}
+				
+				.box-data-inside-img_cancel /* to samo co .box-data-inside-img_bad */
+				{}
+
+				.box-data-inside-img_good
+				{}
+
+				.box-data-inside-img_warning
+				{}
+
+				.box-data-inside-img_bad
+				{}
+
+				.box-data-inside-img_critical
+				{}
+			
+			/* BOX DATA IMG - INSIDE - end */

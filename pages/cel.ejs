@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Wczytajka - Cel</title>
+	<% include partials/head.ejs %>
+	
+</head>
+<body>
+
+	<script>
+		//// w przypadku INCLUDE - <PROCENT include ../something_here.js %> musimy pamietac, ze zczytuje on dalsza czesc nawet jezeli zblokujemy komentarz za pomoca // lub <!-- --> !!!
+		//// czyli jak uzyjemy //<PROCENT include ../something_here.js %> lub <!-- <PROCENT include ../something_here.js %> --> to to ZOSTANIE ZCZYTANE, mimo ze zablokowalismy komentarz!
+		//// jak chcemy cos zalaczyc jako wylaczone trzeba zamienic % (PROCENT) na np # - //<# include ../something_here.js %> lub <!-- <# include ../something_here.js %> -->
+
+		////we include some JS files to load them ASAP:
+		<% include ../public/js/socket.io.min_v2.1.1.js %> // must be loaded before socket.js // on live server we need to use - <# include ../js/socket.io.min_v2.1.1.js %>
+		//<# include ../public/js/socket.io.min_v2.0.3.js %> // must be loaded before socket.js // on live server we need to use - <# include ../js/socket.io.min_v2.0.3.js %>
+		<% include ../public/js/jquery.min_v3.1.1.js %> // for menu toggle/slidedown // on live server we need to use - <# include ../js/jquery.min_v3.1.1.js %>
+		<% include ../public/js/bootstrap.min_v3.3.7.js %> // for menu affix (so it can be always visible) --- this file must be loaded before any JQUERY COMBINED SCROLL affix OR affix code // on live server we need to use - <# include ../js/bootstrap.min_v3.3.7.js %>
+		//<# include ../public/js/bootstrap.min_v4.0.js %> // on live server we need to use - <# include ../js/bootstrap.min_v4.0.js %>
+	</script>
+
+	<div id="refresh_modal" class="refresh_modal"><!-- this is for modal box to display page messages - https://www.w3schools.com/howto/howto_css_modals.asp -->
+		<div class="refresh_modal_box">
+			<div class="refresh_modal_content">
+				<span class="refresh_modal_close">&times;</span><!--   '&times;' = X mark		OR		we can just put 'X' letter there		OR		another symbol from - https://www.w3schools.com/charsets/ref_html_entities_4.asp -->
+				<!-- <h3>Informacja:</h3> -->
+				<p>Odświerzanie nie przyniesie zamierzonego skutku, zamiast tego przejdź na:<br /><a href="https://localhost:6500/" rel="dofollow" title="SeoTester start page">strone startową</a> i ponownie wybierz cel.</p>
+			</div>
+		</div>
+	</div>
+	
+	<div id="pdf_modal" class="pdf_modal"><!-- this is for modal box to display page messages - https://www.w3schools.com/howto/howto_css_modals.asp -->
+		<div class="pdf_modal_box">
+			<div class="pdf_modal_content">
+				<span class="pdf_modal_close">&times;</span><!--   '&times;' = X	mark			OR		we can just put 'X' letter there		OR		another symbol from - https://www.w3schools.com/charsets/ref_html_entities_4.asp -->
+				<!-- <h3>Informacja:</h3> -->
+				<p>Zaczekaj aż zostaną załadowane wszystkie dane (przycisk zmieni wtedy kolor na <span style="color:#109618;text-decoration:underline;">zielony</span>) - możesz wtedy spokojnie wygenerować PDF'a (będzie on kompletny).</p>
+			</div>
+		</div>
+	</div>
+	
+	<div id="pdf_ready_modal" class="pdf_ready_modal"><!-- this is for modal box to display page messages - https://www.w3schools.com/howto/howto_css_modals.asp -->
+		<div class="pdf_ready_modal_box">
+			<div class="pdf_ready_modal_content">
+				<span class="pdf_ready_modal_close">&times;</span><!--   '&times;' = X mark		OR		we can just put 'X' letter there		OR		another symbol from - https://www.w3schools.com/charsets/ref_html_entities_4.asp -->
+				<!-- <h3>Informacja:</h3> -->
+				<p>PDF jest generowany, może to chwilę potrwać - gdy plik będzie gotowy przeglądarka powiadomi Cię komunikatem o zapisie pliku bądź zapisze plik we wskazanym miejscu.</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="wrapper">
+			
+		<div class="top_wrapper">
+			<% include partials/header.ejs %>
+			<% include partials/menu.ejs %>
+		</div>
+		<main>
+		<div class="main_wrapper">
+			<div class="main_container">
+			
+					<div class="messages">
+						<!-- <# if (typeof message == "undefined") { %> -->
+						<!-- <# } else { %> -->
+							<!-- <#- message %> -->
+						<!-- <# } %> -->
+					</div>
+
+					<!-- uwaga aby klasy nie powtarzaly sie z klasami na sciaganej stronie (aby nie byly takie same - bo style beda sie nakladac) -->
+				
+				<div id="pdf_content">
+					
+					<div class="cel_container">
+						
+						<div id="section-1">
+							<div class="audit-results_container">
+								<div class="audit-results_name"><div class="container_name">Wynik audytu:<!-- <a name="wynik_audytu">Wynik audytu:</a> --></div><div class="audit-results_arrow"></div></div>
+								<div class="audit-results_box">
+									<ul class="audit-results_ul">
+										<li>
+											<div class="basic_info">
+												<div class="target_container">
+													<div class="target_name"><div class="container_name">Target:</div></div>
+													<div class="target"></div>
+												</div>
+												<div class="time_container">
+													<div class="time_name"><div class="container_name">Time:</div></div>
+													<div class="time"></div>
+												</div>
+												<div class="user_ip_container">
+													<div class="user_ip_name"><div class="container_name">User IP:</div></div>
+													<div class="user_ip"></div>
+												</div>
+											</div><!-- / basic_info -->
+
+											<div class="results_graph_container">
+												<div class="results_graph_name"><!-- Site audit results - graph: --></div>
+												<div class="results_graph">
+													<div class="percentGraph"></div>
+													<div class="countGraph"></div>
+												</div>
+												<div class="graph-data"></div>
+											</div>
+
+											<div class="audit-results_todolist_container">
+												<div class="audit-results_todolist_name"><div class="container_name">Lista rzeczy do poprawy:</div><div class="audit-results_todolist_arrow"></div></div>
+												<div id="audit-results_todolist_anchor"></div><div class="audit-results_todolist"></div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div id="section-2">
+							<div class="user_info_container">
+								<div class="user_info_name"><div class="container_name">User informations:</div><div class="user_info_arrow"></div></div>
+								<div class="user_info_box">
+									<ul class="user_info_ul">
+										<li>
+											<div class="user_geolocation_container">
+												<div class="user_geolocation_name"><div class="container_name">Geolocation:</div><div class="user_geolocation_arrow"></div></div>
+												<div class="user_geolocation"><div class="user_geolocation_map"></div></div>
+											</div>
+											<div class="user_agent_container">
+												<div class="user_agent_name"><div class="container_name">User agent:</div><div class="user_agent_arrow"></div></div>
+												<div class="user_agent"></div>
+											</div>
+											<div class="user_latency_container">
+												<div class="user_latency_name"><div class="container_name">User latency:</div><div class="user_latency_arrow"></div></div>
+												<div class="user_latency"></div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						
+						<div id="section-3">
+							<div class="domain_info_container">
+								<div class="domain_info_name"><div class="container_name">Domain informations:</div><div class="domain_info_arrow"></div></div>
+								<div class="domain_info_box">
+									<ul class="domain_info_ul">
+										<li>
+											<div class="whois_container">
+												<div class="whois_name"><div class="container_name">Whois:</div><div class="domain_whois_arrow"></div></div>
+												<div class="whois">Dla autoryzowanych użytkowników.</div>
+											</div>
+											<div class="age_container">
+												<div class="age_name"><div class="container_name">Age:</div><div class="domain_age_arrow"></div></div>
+												<div class="age">Dla autoryzowanych użytkowników.</div>
+											</div>
+											<div class="rank_container">
+												<div class="rank_name"><div class="container_name">Page rank:</div><div class="domain_rank_arrow"></div></div>
+												<div class="rank">Dla autoryzowanych użytkowników.</div>
+											</div>
+											<div class="domain_ip_container">
+												<div class="domain_ip_name"><div class="container_name">Domain IP:</div><div class="domain_ip_arrow"></div></div>
+												<div class="domain_ip"></div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						
+						<div id="section-4">
+							<div class="server_info_container">
+								<div class="server_info_name"><div class="container_name">Server informations:</div><div class="server_info_arrow"></div></div>
+								<div class="server_info_box">
+									<ul class="server_info_ul">
+										<li>
+											<div id="server_geolocation_anchor"></div>
+											<div class="server_geolocation_container">
+												<div class="server_geolocation_name"><div class="container_name">Geolocation:</div><div class="server_geolocation_arrow"></div></div>
+												<div class="server_geolocation"></div>
+											</div>
+											<!-- latency (ping) time -->
+											<div id="server_latency_anchor"></div>
+											<div class="server_latency_container">
+												<div class="server_latency_name"><div class="container_name">Latency:</div><div class="server_latency_arrow"></div></div>
+												<div class="server_latency"></div>
+											</div>
+											<div id="server_ip_anchor"></div>
+											<div class="server_ip_container">
+												<div class="server_ip_name"><div class="container_name">IP:</div><div class="server_ip_arrow"></div></div>
+												<div class="server_ip"></div>
+											</div>
+											<div id="server_type_anchor"></div>
+											<div class="server_type_container">
+												<div class="server_type_name"><div class="container_name">Type:</div><div class="server_type_arrow"></div></div>
+												<div class="server_type"></div>
+											</div>
+											<div id="protocol_anchor"></div>
+											<div class="protocol_container">
+												<div class="protocol_name"><div class="container_name">Protocol:</div><div class="protocol_arrow"></div></div>
+												<div class="protocol"></div>
+											</div>
+											<div id="status_code_anchor"></div>
+											<div class="status_code_container">
+												<div class="status_code_name"><div class="container_name">Status code:</div><div class="status_code_arrow"></div></div>
+												<div class="status_code"></div>
+											</div>
+											<!-- connection time of SOCKET, DNS, TCP, HTTP, whole page download time - this is NOT latency (latency is in Server informations) -->
+											<div id="connection_time_anchor"></div>
+											<div class="connection_time_container">
+												<div class="connection_time_name"><div class="container_name">Connection time:</div><div class="connection_time_arrow"></div></div>
+												<div class="connection_time"></div>
+											</div>
+											<div id="requests_anchor"></div>
+											<div class="requests_container">
+												<div class="requests_name"><div class="container_name">Requests:</div><div class="requests_arrow"></div></div>
+												<div class="requests"></div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						
+						<!--
+						<div id="section-5">
+							<div class="server_connection_container">
+								<div class="server_connection_name"><div class="container_name">Server connection:</div><div class="server_connection_arrow"></div></div>
+								<div class="server_connection_box">
+									<ul class="server_connection_ul">
+										<li>
+											<div id="requests_anchor"></div>
+											<div class="requests_container">
+												<div class="requests_name"><div class="container_name">Requests:</div><div class="requests_arrow"></div></div>
+												<div class="requests"></div>
+											</div>
+											<div id="protocol_anchor"></div>
+											<div class="protocol_container">
+												<div class="protocol_name"><div class="container_name">Protocol:</div><div class="protocol_arrow"></div></div>
+												<div class="protocol"></div>
+											</div>
+											<div id="connection_time_anchor"></div>
+											<div class="connection_time_container">
+												<div class="connection_time_name"><div class="container_name">Connection time:</div><div class="connection_time_arrow"></div></div>
+												<div class="connection_time"></div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						-->
+
+						<div id="section-5">
+							<div class="site_architecture_container">
+								<div class="site_architecture_name"><div class="container_name">Site architecture:</div><div class="site_architecture_arrow"></div></div>
+								<div class="site_architecture_box">
+									<ul class="site_architecture_ul">
+										<li>
+											<div id="headers_anchor"></div>
+											<div class="headers_container">
+												<div class="headers_name"><div class="container_name">Headers:</div><div class="headers_arrow"></div></div>
+												<div class="headers"></div>
+											</div>
+											<div id="robots_anchor"></div>
+											<div class="robots_container">
+												<div class="robots_name"><div class="container_name">Robots:</div><div class="robots_arrow"></div></div>
+												<div class="robots"></div>
+											</div>
+											<div id="sitemap_anchor"></div>
+											<div class="sitemap_container">
+												<div class="sitemap_name"><div class="container_name">Sitemap:</div><div class="sitemap_arrow"></div></div>
+												<div class="sitemap"></div>
+											</div>
+											<div id="cookies_anchor"></div>
+											<div class="cookies_container">
+												<div class="cookies_name"><div class="container_name">Cookies:</div><div class="cookies_arrow"></div></div>
+												<div class="cookies"></div>
+											</div>
+											<div id="mobile_anchor"></div>
+											<div class="mobile_container">
+												<div class="mobile_name"><div class="container_name">Mobile:</div><div class="mobile_arrow"></div></div>
+												<div class="mobile"></div>
+											</div>
+											<div class="site_content_container">
+												<div class="site_content_name"><div class="container_name">Site content:</div><div class="site_content_arrow"></div></div>
+												<div class ="site_content_box">
+													<ul class="site_content_ul">
+														<li>
+															<div id="section-5a">
+																<div class="code_semantic_container">
+																	<div class="code_semantic_name"><div class="container_name">Code semantic:</div><div class="code_semantic_arrow"></div></div>
+																	<!--
+																	STRUKTURA HTML (iframe, frame, flash),
+																	INFO Z WALIDATOROW (css validation, html validation)
+																	-->
+																	<div class="code_semantic">
+																		<div id="flash_anchor"></div><div class="flash"></div>
+																		<div id="frame_anchor"></div><div class="frame"></div>
+																		<div id="iframe_anchor"></div><div class="iframe"></div>
+																		<div id="html_validation_anchor"></div><div class="html_validation"></div>
+																		<div id="css_validation_anchor"></div><div class="css_validation"></div>
+																		<div id="speed_anchor"></div><div class="speed"></div>
+																	</div>
+																</div>
+															</div>
+															<div id="section-5b">
+																<div class="seo_container">
+																	<div class="seo_name"><div class="container_name">SEO:</div><div class="seo_arrow"></div></div>
+																	<!--
+																	SEMANTYKA HTML (alinks [a], paragraphs [p], lists [li, ul], headlines [hX], doctype, language, styles, scripts, table, accentuation, url_length),
+																	META (vievport, encoding, favicon, description, keywords),
+																	PRZEKIEROWANIA (www, index.html, index.php, ip),
+																	SIZE (scripts, style, text, html),
+																	MEDIA (images, sounds, videos),
+																	social data (google+, facebook, instagram) [itp. itd.]
+																	-->
+																	<div class="seo">
+																		<div id="url_length_anchor"></div><div class="url_length"></div>
+																		<div class="line"></div>
+																		<div id="doctype_anchor"></div><div class="doctype"></div>
+																		<div class="line"></div>
+																		<div id="lang_anchor"></div><div class="lang"></div>
+																		<div class="line"></div>
+																		<div id="accentuation_anchor"></div><div class="accentuation"></div>
+																		<div class="line"></div>
+																		<div id="table_anchor"></div><div class="table"></div>
+																		<div class="line"></div>
+																		<div id="links_anchor"></div><div class="links"></div>
+																		<div class="line"></div>
+																		<div id="scripts_anchor"></div><div class="scripts"></div>
+																		<div class="line"></div>
+																		<div id="styles_anchor"></div><div class="styles"></div>
+																		<div class="line"></div>
+																		<div id="headlines_anchor"></div><div class="headlines"></div>
+																		<div class="line"></div>
+																		<div id="alinks_anchor"></div><div class="alinks"></div>
+																		<div class="line"></div>
+																		<div id="lists_anchor"></div><div class="lists"></div>
+																		<div class="line"></div>
+																		<div id="paragraphs_anchor"></div><div class="paragraphs"></div>
+																		<div class="line"></div>
+																		<div id="meta_anchor"></div><div class="meta"></div>
+																		<div class="line"></div>
+																		<div id="redirects_anchor"></div><div class="redirects"></div>
+																		<div class="line"></div>
+																		<div id="page_size_anchor"></div><div class="page_size"></div>
+																		<div class="line"></div>
+																		<div id="page_speed_anchor"></div><div class="page_speed"></div>
+																		<div class="line"></div>
+																		<div id="mozrank_anchor"></div><div class="mozrank"></div>
+																	</div>
+																</div>
+															</div>
+															<div id="section-5c">
+																<div class="cms_container">
+																	<div class="cms_name"><div class="container_name">CMS:</div><div class="cms_arrow"></div></div>
+																	<div class="cms"><div id="cms_anchor"></div></div>
+																</div>
+															</div>
+															<div id="section-5d">
+																<div class="media_container">
+																	<div class="media_name"><div class="container_name">Media:</div><div class="media_arrow"></div></div>
+																	<div class="media">
+																		<div id="images_anchor"></div><div class="images"></div>
+																		<div id="favicons_anchor"></div><div class="favicons"></div>
+																		<div id="video_anchor"></div><div class="video"></div>
+																		<div id="audio_anchor"></div><div class="audio"></div>
+																	</div>
+																</div>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						
+					</div><!-- / cel_container -->
+				</div><!-- / pdf_content -->
+				
+					<div class="garbage">
+							<div class="sliding_info"></div>
+					</div>
+			
+			</div><!-- / main_container -->
+		
+		<!-- PONIZSZY KOD HTML ODPOWIADA ZA PRAWA CZESC STRONY - ASSIDE (MENU)
+		asside container musi wyswietlac pozycje w zaleznosci od szerokosci ekranu:
+		jezeli jest odpowiednia szerokosc - wjezdza menu
+		jezeli jest odpowiednia szerokosc - + wjezdza zwijanie i rozwijanie
+		jezeli jest odpowiednia szerokosc - + wjezdza czat
+		-->
+			<div class="aside_wrapper">
+				<div class="aside_container">
+					<!-- <div class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="300"> -->
+					<!-- <div class="sps sps--abv"> -->
+					<div class="myaffix">
+						<nav class="page-navigation">
+							<ul class="menu">
+								<li class="top"><a href="#section-1"><ico class="fas fa-chart-line fa-lg"></ico> Wynik audytu <<< </a></li>
+								<li class="sec1"><a href="#section-2"><ico class="fas fa-user fa-lg"></ico> User info</a></li>
+								<li class="sec2"><a href="#section-3"><ico class="fas fa-globe-americas fa-lg"></ico> Domain info</a></li>
+								<li class="sec3"><a href="#section-4"><ico class="fas fa-sitemap fa-lg"></ico> Server info</a></li>
+								<!-- <li class="sec4"><a href="#section-5"><ico class="fas fa-plug fa-lg"></ico> Server connection</a></li> -->
+								<li class="sec4"><a href="#section-5"><ico class="fas fa-code-branch fa-lg"></ico> Site architecture:</a></li>
+								<li class="sec4a"><a href="#section-5a">- <ico class="fas fa-code fa-lg"></ico> Code Semantic</a></li>
+								<li class="sec4b"><a href="https://localhost:6500/cel#section-5b"> - <i class="fas fa-search fa-lg"></i> SEO (test linku)</a></li>
+								<li class="sec4c"><a href="#section-5c">- <ico class="fab fa-drupal fa-lg"></ico> <ico class="fab fa-wordpress-simple fa-lg"></ico> <ico class="fab fa-joomla fa-lg"></ico> CMS</a></li>
+								<li class="sec4d"><a href="#section-5d">- <ico class="far fa-images fa-lg"></ico> Media</a></li>
+								<li class="pdf"><div class="pdf_border pdf_nonactive"><div class="pdf_button"><ico class="fas fa-file-pdf fa-lg"></ico> Create PDF</div></div></li>
+							</ul>
+						</nav>
+						
+						<div class="chat_pdf_wynik">
+							<!-- <div class="create_pdf">Create PDF</div> -->
+							
+							<!-- DONE:
+								tu zrobic jednego diva - po pierwszym kliknieciu ma zmienic nazwe z 'Rozwin informacje' na 'Zwin informacje' ?? pytanie czy to zadziala jak WSZYSTKIE elementy maja byc rozwijane
+								(nawet jak czesc jest rozwinieta a czesc zwinieta to wszystkie maja sie rozwinac! a w odwrotnym przypadku wszystkie maja sie zwinac!)
+							-->
+							<div class="rozwin-zwin_info">Rozwiń/Zwiń <u>dodatkowe informacje</u></div>
+							<div class="rozwin-zwin_content">Rozwiń/Zwiń <u>treść</u></div>
+						</div>
+						
+						<div class="chat_wrapper">
+							<div class="slide" id="chat_content"><!-- for chat slider -->
+							
+								<div class="chat_container">
+									<h2>CHAT:</h2>
+									<div class="chat_username_container">
+										<div class="chat_username_headline">Create username:</div>
+										<form name="form_username_name" id="form_username_id" class="form_username_class">
+											<input type="text" name="form_username_input_name" id="form_username_input_id" class="form_username_input_class" size="20" maxlength="20" />
+											<input type="submit" id="form_username_submit_id" class="form_username_submit_class" value="Hit ENTER or CLICK here" title="Send it!" />
+										</form>
+									</div>
+									<div class="chat_message_container">
+										<div class="chat_message_headline">Wyślij wiadomość:</div>
+										<form name="form_message_name" id="form_message_id" class="form_message_class">
+											<input type="text" name="form_message_input_name" id="form_message_input_id" class="form_message_input_class" />
+											<input type="submit" id="form_message_submit_id" class="form_message_submit_class" value="Hit ENTER or CLICK here" title="Send it!" />
+										</form>
+										
+										<div class="chat_usernames">
+											<div class="chat_usernames_headline">Online users:</div>
+											<div class="chat_usernames_list"></div>
+										</div>
+										<div class="chat_messages"></div>
+									</div>
+								</div>
+							
+							</div>
+							<div class="slide" id='chat_slide_button'><!-- for chat slider (on/off) -->
+								<span class="chat_slide_button_shrink_text"><b>&lt;-</b> CHAT!</span>
+								<span class="chat_slide_button_expanded_text">Zwin <b>-&gt;</b></span>
+							</div>
+						</div>
+					</div><!-- myaffix-->
+				</div><!-- aside_container -->
+			</div><!-- aside_wrapper -->
+		</div><!-- main_wrapper -->
+		</main>
+		
+		<div class="footer_wrapper">
+			<% include partials/footer.ejs %>
+		</div>
+
+	</div><!-- wrapper-->
+	
+	<script type="text/javascript">
+		<% include ../public/js/socket.js %>
+		<% include ../public/js/jquery.combinedScroll.js %>
+		<% include ../public/js/clipboard.min_v1.7.1.js %>
+		<% include ../public/js/d3.min_v5.4.0.js %>
+		<% include ../public/js/jspdf.min_v1.4.1.js %>
+
+		var refresh_modal=document.getElementsByClassName("refresh_modal")[0],refresh_modal_close=document.getElementsByClassName("refresh_modal_close")[0];refresh_modal_close.onclick=function(){refresh_modal.style.display="none"};var ctrlKeyDown=!(window.onclick=function(e){e.target==refresh_modal&&(refresh_modal.style.display="none"),e.target==pdf_modal&&(pdf_modal.style.display="none"),e.target==pdf_ready_modal&&(pdf_ready_modal.style.display="none")});function keydown(e){116==(e.which||e.keyCode)||82==(e.which||e.keyCode)&&ctrlKeyDown?(e.preventDefault(),refresh_modal.style.display="block"):17==(e.which||e.keyCode)&&(ctrlKeyDown=!0)}function keyup(e){17==(e.which||e.keyCode)&&(ctrlKeyDown=!1)}function setActiveStyleSheet(e){var t,i;for(t=0;i=document.getElementsByTagName("link")[t];t++)-1!==i.getAttribute("rel").indexOf("style")&&i.getAttribute("title")&&(i.disabled=!0,i.getAttribute("title")==e&&(i.disabled=!1))}function getActiveStyleSheet(){var e,t;for(e=0;t=document.getElementsByTagName("link")[e];e++)if(-1!==t.getAttribute("rel").indexOf("style")&&t.getAttribute("title")&&!t.disabled)return t.getAttribute("title");return null}function getPreferredStyleSheet(){var e,t;for(e=0;t=document.getElementsByTagName("link")[e];e++)if(-1!=t.getAttribute("rel").indexOf("style")&&-1==t.getAttribute("rel").indexOf("alter")&&t.getAttribute("title"))return t.getAttribute("title");return null}function createCookie(e,t,i){if(i){var l=new Date;l.setTime(l.getTime()+24*i*60*60*1e3);var s="; expires="+l.toGMTString()}else s="";document.cookie=e+"="+t+s+"; path=/"}function readCookie(e){for(var t=e+"=",i=document.cookie.split(";"),l=0;l<i.length;l++){for(var s=i[l];" "==s.charAt(0);)s=s.substring(1,s.length);if(0==s.indexOf(t))return s.substring(t.length,s.length)}return null}$(document).on("keydown",keydown),$(document).on("keyup",keyup),$(".myaffix").affix({offset:{top:$(".myaffix").offset().top,bottom:function(){return this.bottom=$(".footer_wrapper").outerHeight(!0)+10}}}),document.getElementsByClassName("audit-results_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />',$(".audit-results_name").click(function(){$(".audit-results_ul").slideToggle(function(){$(".audit-results_ul").is(":visible")&&(document.getElementsByClassName("audit-results_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />'),$(".audit-results_ul").is(":hidden")&&(document.getElementsByClassName("audit-results_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" alt="click to show" title="click to show" />')})}),document.getElementsByClassName("user_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />',$(".user_info_name").click(function(){$(".user_info_ul").slideToggle(function(){$(".user_info_ul").is(":visible")&&(document.getElementsByClassName("user_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />'),$(".user_info_ul").is(":hidden")&&(document.getElementsByClassName("user_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" alt="click to show" title="click to show" />')})}),document.getElementsByClassName("user_geolocation_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />',$(".user_geolocation_name").click(function(){$(".user_geolocation_ul").slideToggle(function(){$(".user_geolocation_ul").is(":visible")&&(document.getElementsByClassName("user_geolocation_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />'),$(".user_geolocation_ul").is(":hidden")&&(document.getElementsByClassName("user_geolocation_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" alt="click to show" title="click to show" />')})}),document.getElementsByClassName("domain_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />',$(".domain_info_name").click(function(){$(".domain_info_ul").slideToggle(function(){$(".domain_info_ul").is(":visible")&&(document.getElementsByClassName("domain_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />'),$(".domain_info_ul").is(":hidden")&&(document.getElementsByClassName("domain_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" alt="click to show" title="click to show" />')})}),document.getElementsByClassName("server_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />',$(".server_info_name").click(function(){$(".server_info_ul").slideToggle(function(){$(".server_info_ul").is(":visible")&&(document.getElementsByClassName("server_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />'),$(".server_info_ul").is(":hidden")&&(document.getElementsByClassName("server_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" alt="click to show" title="click to show" />')})}),document.getElementsByClassName("site_architecture_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />',$(".site_architecture_name").click(function(){$(".site_architecture_ul").slideToggle(function(){$(".site_architecture_ul").is(":visible")&&(document.getElementsByClassName("site_architecture_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />'),$(".site_architecture_ul").is(":hidden")&&(document.getElementsByClassName("site_architecture_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" alt="click to show" title="click to show" />')})}),document.getElementsByClassName("site_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />',$(".site_content_name").click(function(){$(".site_content_ul").slideToggle(function(){$(".site_content_ul").is(":visible")&&(document.getElementsByClassName("site_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" alt="click to hide" title="click to hide" />'),$(".site_content_ul").is(":hidden")&&(document.getElementsByClassName("site_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" alt="click to show" title="click to show" />')})}),$(document).ready(function(){$(".page-navigation").onePageNav();var i=$("#chat_content").width(),e=Math.round(i);i!==e&&(i=e),$("#chat_slide_button").click(function(){var e=$(this).css("margin-right")==i+"px"&&!$(this).is(":animated"),t=e?"-":"+";$(this).is(":animated")||$(".slide").animate({"margin-right":t+"="+i+"px"},400),e?$(".slide").removeClass("expanded"):$(".slide").addClass("expanded")});var t=1;document.getElementsByClassName("rozwin-zwin_info")[0].addEventListener("click",function(){t%2==0?($(".audit-results_todolist_li_info,.user_agent_li_info, .user_latency_li_info,.domain_whois_li_info, .domain_ip_li_info,.status_code_li_info, .server_ip_li_info, .server_geolocation_li_info, .server_latency_li_info, .server_type_li_info,.requests_li_info, .protocol_li_info, .connection_time_li_info,.headers_li_info, .sitemap_li_info, .robots_li_info, .cookies_li_info,.flash_li_info, .frame_li_info, .iframe_li_info, .speed_li_info, .css_validation_li_info, .html_validation_li_info,.url_length_li_info, .doctype_li_info, .lang_li_info, .accentuation_li_info, .table_li_info, .meta_li_info, .links_li_info, .scripts_li_info, .styles_li_info, .headlines_li_info, .alinks_li_info, .lists_li_info, .paragraphs_li_info, .redirects_li_info, .page_size_li_info, .mozrank_li_info,.cms_li_info,.images_li_info, favicons_li_info").slideUp(),document.getElementsByClassName("audit-results_todolist_info_arrow")[0]&&(document.getElementsByClassName("audit-results_todolist_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("user_agent_info_arrow")[0]&&(document.getElementsByClassName("user_agent_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("user_latency_info_arrow")[0]&&(document.getElementsByClassName("user_latency_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("domain_ip_info_arrow")[0]&&(document.getElementsByClassName("domain_ip_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("status_code_info_arrow")[0]&&(document.getElementsByClassName("status_code_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("server_ip_info_arrow")[0]&&(document.getElementsByClassName("server_ip_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("server_geolocation_info_arrow")[0]&&(document.getElementsByClassName("server_geolocation_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("server_latency_info_arrow")[0]&&(document.getElementsByClassName("server_latency_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("server_type_info_arrow")[0]&&(document.getElementsByClassName("server_type_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("requests_info_arrow")[0]&&(document.getElementsByClassName("requests_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("protocol_info_arrow")[0]&&(document.getElementsByClassName("protocol_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("connection_time_info_arrow")[0]&&(document.getElementsByClassName("connection_time_info_arrow")[0].innerHTML='<img src="img/results/hover_arrow_green_border_20.png" alt="click to show" title="click to show" />'),document.getElementsByClassName("headers_info_arrow")[0].innerHTML&&(document.getElementsByClassName("headers_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("sitemap_info_arrow")[0]&&(document.getElementsByClassName("sitemap_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("robots_info_arrow")[0]&&(document.getElementsByClassName("robots_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("flash_info_arrow")[0]&&(document.getElementsByClassName("flash_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("frame_info_arrow")[0]&&(document.getElementsByClassName("frame_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("iframe_info_arrow")[0]&&(document.getElementsByClassName("iframe_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("css_validation_info_arrow")[0]&&(document.getElementsByClassName("css_validation_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("html_validation_info_arrow")[0]&&(document.getElementsByClassName("html_validation_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("url_length_info_arrow")[0]&&(document.getElementsByClassName("url_length_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("doctype_info_arrow")[0]&&(document.getElementsByClassName("doctype_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("lang_info_arrow")[0]&&(document.getElementsByClassName("lang_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("accentuation_info_arrow")[0]&&(document.getElementsByClassName("accentuation_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("table_info_arrow")[0]&&(document.getElementsByClassName("table_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("meta_info_arrow")[0]&&(document.getElementsByClassName("meta_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("links_info_arrow")[0]&&(document.getElementsByClassName("links_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("scripts_info_arrow")[0]&&(document.getElementsByClassName("scripts_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("styles_info_arrow")[0]&&(document.getElementsByClassName("styles_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("headlines_info_arrow")[0]&&(document.getElementsByClassName("headlines_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("alinks_info_arrow")[0]&&(document.getElementsByClassName("alinks_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("lists_info_arrow")[0]&&(document.getElementsByClassName("lists_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("paragraphs_info_arrow")[0]&&(document.getElementsByClassName("paragraphs_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("redirects_info_arrow")[0]&&(document.getElementsByClassName("redirects_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("page_size_info_arrow")[0]&&(document.getElementsByClassName("page_size_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("cms_info_arrow")[0]&&(document.getElementsByClassName("cms_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("images_info_arrow")[0]&&(document.getElementsByClassName("images_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("favicons_info_arrow")[0]&&(document.getElementsByClassName("favicons_info_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("rozwin-zwin_info")[0].innerHTML="Rozwiń dodatkowe informacje",document.getElementsByClassName("rozwin-zwin_info")[0].setAttribute("style",'background:#ff9933;background:-moz-linear-gradient(top,#ff9933 0%,#ffcc66 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#ff9933),color-stop(100%,#ffcc66));background:-webkit-linear-gradient(top,#ff9933 0%,#ffcc66 100%);background:-o-linear-gradient(top,#ff9933 0%,#ffcc66 100%);background:-ms-linear-gradient(top,#ff9933 0%,#ffcc66 100%);-ms-filter:"progid:dximagetransform.microsoft.gradient(startcolorstr="#ff9933",endcolorstr="#ffcc66",gradienttype=0)";background:linear-gradient(to bottom,#ff9933 0%,#ffcc66 100%);')):($(".audit-results_todolist_li_info,.user_agent_li_info, .user_latency_li_info,.domain_whois_li_info, .domain_ip_li_info,.status_code_li_info, .server_ip_li_info, .server_geolocation_li_info, .server_latency_li_info, .server_type_li_info,.requests_li_info, .protocol_li_info, .connection_time_li_info,.headers_li_info, .sitemap_li_info, .robots_li_info, .cookies_li_info,.flash_li_info, .frame_li_info, .iframe_li_info, .speed_li_info, .css_validation_li_info, .html_validation_li_info,.url_length_li_info, .doctype_li_info, .lang_li_info, .accentuation_li_info, .table_li_info, .meta_li_info, .links_li_info, .scripts_li_info, .styles_li_info, .headlines_li_info, .alinks_li_info, .lists_li_info, .paragraphs_li_info, .redirects_li_info, .page_size_li_info, .mozrank_li_info,.cms_li_info,.images_li_info").slideDown(),document.getElementsByClassName("audit-results_todolist_info_arrow")[0]&&(document.getElementsByClassName("audit-results_todolist_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("user_agent_info_arrow")[0]&&(document.getElementsByClassName("user_agent_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("user_latency_info_arrow")[0]&&(document.getElementsByClassName("user_latency_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("domain_ip_info_arrow")[0]&&(document.getElementsByClassName("domain_ip_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("status_code_info_arrow")[0]&&(document.getElementsByClassName("status_code_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("server_ip_info_arrow")[0]&&(document.getElementsByClassName("server_ip_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("server_geolocation_info_arrow")[0]&&(document.getElementsByClassName("server_geolocation_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("server_latency_info_arrow")[0]&&(document.getElementsByClassName("server_latency_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("server_type_info_arrow")[0]&&(document.getElementsByClassName("server_type_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("requests_info_arrow")[0]&&(document.getElementsByClassName("requests_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("protocol_info_arrow")[0]&&(document.getElementsByClassName("protocol_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("connection_time_info_arrow")[0]&&(document.getElementsByClassName("connection_time_info_arrow")[0].innerHTML='<img src="img/results/hover_arrow_active_red_border_20.png" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("headers_info_arrow")[0].innerHTML&&(document.getElementsByClassName("headers_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("sitemap_info_arrow")[0]&&(document.getElementsByClassName("sitemap_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("robots_info_arrow")[0]&&(document.getElementsByClassName("robots_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("flash_info_arrow")[0]&&(document.getElementsByClassName("flash_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("frame_info_arrow")[0]&&(document.getElementsByClassName("frame_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("iframe_info_arrow")[0]&&(document.getElementsByClassName("iframe_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("css_validation_info_arrow")[0]&&(document.getElementsByClassName("css_validation_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("html_validation_info_arrow")[0]&&(document.getElementsByClassName("html_validation_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("url_length_info_arrow")[0]&&(document.getElementsByClassName("url_length_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("doctype_info_arrow")[0]&&(document.getElementsByClassName("doctype_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("lang_info_arrow")[0]&&(document.getElementsByClassName("lang_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("accentuation_info_arrow")[0]&&(document.getElementsByClassName("accentuation_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("table_info_arrow")[0]&&(document.getElementsByClassName("table_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("meta_info_arrow")[0]&&(document.getElementsByClassName("meta_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("links_info_arrow")[0]&&(document.getElementsByClassName("links_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("scripts_info_arrow")[0]&&(document.getElementsByClassName("scripts_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("styles_info_arrow")[0]&&(document.getElementsByClassName("styles_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("headlines_info_arrow")[0]&&(document.getElementsByClassName("headlines_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("alinks_info_arrow")[0]&&(document.getElementsByClassName("alinks_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("lists_info_arrow")[0]&&(document.getElementsByClassName("lists_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("paragraphs_info_arrow")[0]&&(document.getElementsByClassName("paragraphs_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("redirects_info_arrow")[0]&&(document.getElementsByClassName("redirects_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("page_size_info_arrow")[0]&&(document.getElementsByClassName("page_size_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("cms_info_arrow")[0]&&(document.getElementsByClassName("cms_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("images_info_arrow")[0]&&(document.getElementsByClassName("images_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("favicons_info_arrow")[0]&&(document.getElementsByClassName("favicons_info_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("rozwin-zwin_info")[0].innerHTML="Zwiń dodatkowe informacje",document.getElementsByClassName("rozwin-zwin_info")[0].setAttribute("style",'background:#006600;background:-moz-linear-gradient(top,#006600 0%,#339933 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#006600),color-stop(100%,#339933));background:-webkit-linear-gradient(top,#006600 0%,#339933 100%);background:-o-linear-gradient(top,#006600 0%,#339933 100%);background:-ms-linear-gradient(top,#006600 0%,#339933 100%);-ms-filter:"progid:dximagetransform.microsoft.gradient(startcolorstr="#006600",endcolorstr="#339933",gradienttype=0)";background:linear-gradient(to bottom,#006600 0%,#339933 100%);')),t+=1});var l=1;document.getElementsByClassName("rozwin-zwin_content")[0].addEventListener("click",function(){l%2==0?($(".headers_li_content, .sitemap_li_content, .robots_li_content, .cookies_li_content,.css_validation_li_content, .html_validation_li_content,.links_li_content, .scripts_li_content, .styles_li_content, .headlines_li_content, .alinks_li_content, .lists_li_content, .paragraphs_li_content,.images_li_content").slideUp(),document.getElementsByClassName("headers_content_arrow")[0].innerHTML&&(document.getElementsByClassName("headers_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("sitemap_content_arrow")[0]&&(document.getElementsByClassName("sitemap_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("robots_content_arrow")[0]&&(document.getElementsByClassName("robots_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("css_validation_content_arrow")[0]&&(document.getElementsByClassName("css_validation_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("html_validation_content_arrow")[0]&&(document.getElementsByClassName("html_validation_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("links_content_arrow")[0]&&(document.getElementsByClassName("links_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("scripts_content_arrow")[0]&&(document.getElementsByClassName("scripts_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("styles_content_arrow")[0]&&(document.getElementsByClassName("styles_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("headlines_content_arrow")[0]&&(document.getElementsByClassName("headlines_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("alinks_content_arrow")[0]&&(document.getElementsByClassName("alinks_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("lists_content_arrow")[0]&&(document.getElementsByClassName("lists_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("paragraphs_content_arrow")[0]&&(document.getElementsByClassName("paragraphs_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("images_content_arrow")[0]&&(document.getElementsByClassName("images_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("favicons_content_arrow")[0]&&(document.getElementsByClassName("favicons_content_arrow")[0].innerHTML='<img src="img/results/plus_black_15px__hover_hidden.png" style="vertical-align:middle;" alt="click to show" title="click to show" />'),document.getElementsByClassName("rozwin-zwin_content")[0].innerHTML="Rozwiń treść",document.getElementsByClassName("rozwin-zwin_content")[0].setAttribute("style",'background:#ff9933;background:-moz-linear-gradient(top,#ff9933 0%,#ffcc66 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#ff9933),color-stop(100%,#ffcc66));background:-webkit-linear-gradient(top,#ff9933 0%,#ffcc66 100%);background:-o-linear-gradient(top,#ff9933 0%,#ffcc66 100%);background:-ms-linear-gradient(top,#ff9933 0%,#ffcc66 100%);-ms-filter:"progid:dximagetransform.microsoft.gradient(startcolorstr="#ff9933",endcolorstr="#ffcc66",gradienttype=0)";background:linear-gradient(to bottom,#ff9933 0%,#ffcc66 100%);')):($(".headers_li_content, .sitemap_li_content, .robots_li_content, .cookies_li_content,.css_validation_li_content, .html_validation_li_content,.links_li_content, .scripts_li_content, .styles_li_content, .headlines_li_content, .alinks_li_content, .lists_li_content, .paragraphs_li_content,.images_li_content").slideDown(),document.getElementsByClassName("headers_content_arrow")[0].innerHTML&&(document.getElementsByClassName("headers_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("sitemap_content_arrow")[0]&&(document.getElementsByClassName("sitemap_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("robots_content_arrow")[0]&&(document.getElementsByClassName("robots_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("css_validation_content_arrow")[0]&&(document.getElementsByClassName("css_validation_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("html_validation_content_arrow")[0]&&(document.getElementsByClassName("html_validation_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("links_content_arrow")[0]&&(document.getElementsByClassName("links_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("scripts_content_arrow")[0]&&(document.getElementsByClassName("scripts_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("styles_content_arrow")[0]&&(document.getElementsByClassName("styles_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("headlines_content_arrow")[0]&&(document.getElementsByClassName("headlines_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("alinks_content_arrow")[0]&&(document.getElementsByClassName("alinks_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("lists_content_arrow")[0]&&(document.getElementsByClassName("lists_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("paragraphs_content_arrow")[0]&&(document.getElementsByClassName("paragraphs_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("images_content_arrow")[0]&&(document.getElementsByClassName("images_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("favicons_content_arrow")[0]&&(document.getElementsByClassName("favicons_content_arrow")[0].innerHTML='<img src="img/results/minus_black_15px__hover_visible.png" style="vertical-align:middle;" alt="click to hide" title="click to hide" />'),document.getElementsByClassName("rozwin-zwin_content")[0].innerHTML="Zwiń treść",document.getElementsByClassName("rozwin-zwin_content")[0].setAttribute("style",'background:#006600;background:-moz-linear-gradient(top,#006600 0%,#339933 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#006600),color-stop(100%,#339933));background:-webkit-linear-gradient(top,#006600 0%,#339933 100%);background:-o-linear-gradient(top,#006600 0%,#339933 100%);background:-ms-linear-gradient(top,#006600 0%,#339933 100%);-ms-filter:"progid:dximagetransform.microsoft.gradient(startcolorstr="#006600",endcolorstr="#339933",gradienttype=0)";background:linear-gradient(to bottom,#006600 0%,#339933 100%);')),l+=1})}),window.onload=function(e){var t=readCookie("stylesheet");setActiveStyleSheet(t||getPreferredStyleSheet())},window.onunload=function(e){createCookie("stylesheet",getActiveStyleSheet(),365)};var copy_buttons=document.querySelectorAll("button"),clipboard=new Clipboard(copy_buttons);clipboard.on("success",function(e){console.log(e)}),clipboard.on("error",function(e){console.log(e)});
+	</script>
+
+	<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-9yScvUrP9rlsiLU0-3Vptn7G_DB2LQU&callback=initMap" type="text/javascript"></script> -->
+
+</body>
+</html>
+

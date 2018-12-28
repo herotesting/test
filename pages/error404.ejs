@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include partials/head.ejs %>
+		<title>Error 404</title>
+	</head>
+
+	<body>
+		<div class="error404">
+			<h3>BŁĄD 404 - ERROR 404</h3>
+			<br />
+			<h4>Oznacza to, że próbowano dostać się do zasobów, które nie istnieją na serwerze.</h4>
+			<br />
+			<br />
+			Albo użytkownik wprowadził błędne dane, albo na serwerze jest mętlik - sprawdz dane i spróbuj jeszcze raz - w razie ponownych problemów:
+			<br />
+			<br />
+			Przejdz do - <a href="/" title="seo tester - przejdz do strony glownej"><span class="bold">Strony Głównej</span></a>:
+			<br />
+			<br />
+			<a href="/" title="seo tester - przejdz do strony glownej"><img src="../img/error404.png" alt="komunikat bledu - seo tester"></a>
+			<!-- dlatego, ze JS zczytuje img z CALEJ strony (a w stronie mamy zaladowana inna strone...),
+			to te img ktore odnosza sie do SeoTester i nie maja pelnej nazwy hosta jak - src="../img/error404.png" chrzania dzialanie JS -->
+			<br />
+			<br />
+			lub <a href="maito:admin@progames.pro"><span class="bold">poinformuj nas mailem o błędach</span></a>.
+		</div>
+	</body>
+</html>

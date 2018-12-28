@@ -1,0 +1,3 @@
+# Here we ignore files/folders from being uploaded to GIT:
+node_modules/
+# so the only folder that GIT should store is LIVE

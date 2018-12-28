@@ -1,0 +1,51 @@
+/* POLICY */
+https://seoisem.pl/policy
+
+/* TEAM */
+Name: Team
+E-mail: team@seoisem.pl
+Location: Unknow
+
+/* CONTACT */
+e-mail: contact@seoisem.pl
+
+/* ACCEPTED CURRENCY */
+Crypto: btc, ltc, iota, monero
+Pm: gold, silver
+Fiat: USD, EUR
+
+/* SITE */
+Standards: JS, HTML5, CSS3
+Software: NODE.JS, EXPRESS, SOCKET.IO
+Components: custom modules, white noise
+Experiments: jQuery, Modernizr, Bootstrap
+
+/* THANKS */
+CMS communities especially:
+https://www.drupal.org/
+https://wordpress.org/
+https://www.joomla.org/
+and more...
+
+SO community especially:
+Jorg Thuijls, Dani Dean, jsfriend00, slebetman
+and more...
+
+From other communities especially:
+Mirosław Zelent, Tomasz Jakut (aka comandeer), Rafal Kukawski (aka kuku), Tony Alicea
+and more...
+
+Teachers:
+ - all those great youtube, vimeo, etc. videos, courses/explanations/news.
+
+Writers:
+ - for all amazing books.
+ 
+ Webmasters:
+ - for all those magnificent blogs, posts with tons of info and examples.
+ 
+ Family:
+ - for making this project possible.
+ 
+ I hopes that everybody here will get some usefull info for free, to make their pages even better.
+ If you feel that something is wrong do not hesitage to contact us, but please read and OBEY our policy first.

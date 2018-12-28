@@ -1,0 +1,24 @@
+{
+  "name": "seo",
+  "version": "1.0.1",
+  "description": "S",
+  "main": "app.js",
+  "author": {
+    "name": "HADALY",
+    "email": "admin@progames.pro",
+    "url": "http://progames.pro"
+  },
+  "COMMENT": {
+    "//": "to prevent accidental publication"
+  },
+  "license": "proprietary license",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "jsdom": "^11.3.0",
+    "request": "^2.88.0",
+    "socket.io": "^2.1.1"
+  }
+}

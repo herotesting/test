@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Wczytajka - SiteMap</title>
+	<% include partials/head.ejs %>
+
+</head>
+<body>
+
+	<div id="header"></div>
+
+	<div class="wrapper">
+			
+		<div class="top_wrapper">
+			<% include partials/header.ejs %>
+			<% include partials/menu.ejs %>
+		</div>
+		
+		<div class="main_wrapper">
+			<div class="main_container">
+			
+			<div class="sitemap">
+				<table class="sm-table sitemap-tb">
+					<thead>
+						<tr>
+							<th class="header">URL location:</th>
+							<th class="header">Description:</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="https://localhost:6500">https://localhost:6500</a></td>
+							<td> - main page</td>
+						</tr>
+						<tr>
+							<td><a href="https://localhost:6500/kontakt">https://localhost:6500/kontakt</a></td>
+							<td> - contact</td>
+						</tr>
+						<tr>
+							<td><a href="https://localhost:6500/sitemap">https://localhost:6500/sitemap</a></td>
+							<td> - sitemap</td>
+						</tr>
+						<!--
+						<tr>
+							<td><a href="https://localhost:6500/thanks">https://localhost:6500/thanks</a></td>
+							<td> - thanks</td>
+						</tr>
+						-->
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="seo-image">
+				<img src="../img/error404.png" alt="SeoTester" title="SeoTester">
+			</div>
+			
+			</div><!-- / main_container -->
+		</div><!-- main_wrapper -->
+
+	</div><!-- wrapper-->
+
+	<% include partials/footer.ejs %>
+
+</body>
+</html>

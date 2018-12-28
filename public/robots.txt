@@ -1,0 +1,12 @@
+User-agent: *
+Crawl-delay: 10
+# Directories
+Disallow: /tests/
+# Files
+Disallow: /update.php
+# Paths (clean URLs)
+Disallow: /admin/
+# Paths (no clean URLs)
+Disallow: /logout/
+# Sitemaps
+Sitemap: https://seoisem/sitemap.xml
